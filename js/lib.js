@@ -1,3 +1,4 @@
+/* Thanks to Paul Irish http://www.html5boilerplate.com for this little logging function */
 window.log = function () {
     log.history = log.history || [];
     log.history.push( arguments );
@@ -29,7 +30,7 @@ PUI.utils = {
     isDevelopment : function () {
         return ( window.location.href.indexOf('localhost') != -1 ) ? true : false;
     },
-    extend : function( dest, src ) {
+    extend : function( dest, src ) {e
         for ( var prop in src ) {
             dest[prop] = src[prop];
         }
@@ -47,8 +48,6 @@ PUI.templates = {
         '<div class="ui-dialog-body"></div>' +
         '<div class="ui-dialog-foot"></div>' +
         '</div><div id="blackout"><span>test</span></div>'
-  , baseWidget :
-        '<div class="ww"><div class="ww-head"></div><div class="ww-body"></div><div class="ww-foot"></div></div>'
 };
 
 /*
@@ -278,6 +277,11 @@ PUI.dialog = function () {
 };
 PUI.dialog();
 
+
+/*
+ * The only thing I have to say about this is
+ * MSIE, I hate you. Every single one of you.
+ */
 PUI.fileuploader = function () {
     if( $.browser.msie ) {
         return;
@@ -299,42 +303,11 @@ PUI.fileuploader = function () {
 };
 PUI.fileuploader();
 
-PUI.sort = {
-    draggable : (function () {
-
-    })(),
-    droppable : (function () {
-
-    })(),
-    clickable : (function () {
-        var ul = $('ul.sort-by-click')
-          , li = ul.find('>li');
-        // move to first
-        ul.find('a.ui-icon-circ-first').click(function (e) {
-            e.preventDefault();
-            $(this).parents('li').prependTo(ul);
-        });
-        // move to previous
-        ul.find('a.ui-icon-circ-prev').click(function (e) {
-            e.preventDefault();
-            $(this).parents('li').insertBefore( $(this).parents('li').prev('li') );
-        });
-        // move to next
-        ul.find('a.ui-icon-circ-next').click(function (e) {
-            e.preventDefault();
-            $(this).parents('li').insertAfter( $(this).parents('li').next('li') );
-        });
-        // move to last
-        ul.find('a.ui-icon-circ-last').click(function (e) {
-            e.preventDefault();
-            $(this).parents('li').appendTo(ul);
-        });
-    })()
-};  
-
 /*
  * WLIB - Slideshow widget
  * div.js-slideshow>div.tools+div.image-wrapper
+ *
+ * There actually is no slideshow part built in yet. And the counter hasn't been implemented yet, either.
  */
 PUI.slideshow = function () {
     var s = $('.js-slideshow'),
@@ -382,16 +355,3 @@ PUI.slideshow = function () {
     updateCounter();
 };
 PUI.slideshow();
-
-PUI.updateBrowserMessage = function () {
-    //WLIB.templates.baseWidget
-};
-
-
-function fbs_click() {
-    u = location.href;
-    t = document.title;
-    window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');
-    return false;
-};
-// TODO — namespace all UI events and controls into UI namespace. (eg — WLIB.ui.tabs)

@@ -1,1 +1,9 @@
-empty file.
+A little prototype user interface library that is built on top of jQuery as well as using some methods and cues from OOCSS (thanks @stubbornella).
+
+It was originally developed in use for asp.net and our teams development structure so there are some ugly hacks and things going on in regards to that. I do plan on cleaning it all up but there is no date or version number for any of that.
+
+A primary goal is that by simply dropping these files onto your page and using the appropriate mark-up, all the functionality will just fall right into place.
+
+Although I'll use this in production, it's really just a big ol' opportunity for experimentation and quick and dirty prototyping.
+
+Also, I have no training or proper experience with programming or documentation so if my documentation sucks (and you want to use this for some crazy reason), please show and tell me how to document properly. :)
