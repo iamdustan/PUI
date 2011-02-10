@@ -1,0 +1,49 @@
+/* @group Reset
+ * Thanks to Eric Meyer on http://meyerweb.com/eric/tools/css/reset/ for the base.
+ * v1.0 | 20100201
+ */
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,cite,code,
+del,dfn,em,img,ins,q,s,samp,small,strike,strong,sub,sup,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,
+table,caption,tbody,tfoot,thead,tr,th,td {margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent;text-decoration:none;}
+
+html,body,form{min-height:100%;}/* forms. bloody webforms */
+
+ol,ul{list-style:none;}
+blockquote,q{quotes:none;}
+blockquote:before, blockquote:after,
+q:before,q:after{content:'';content:none;}
+
+table{border-collapse:collapse;border-spacing:0;}
+fieldset{border:none;}
+select,input,textarea{font-size: inherit;font-family: inherit;border-width: 1px;line-height: inherit;}
+::selection{color:White;background-color:rgb(250,83,15);}
+.clear{clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0;}/*http://sonspring.com/journal/clearing-floats*/
+.columns:after,
+.clearfix:after{clear:both;content:' ';display:block;font-size:0;line-height:0;visibility:hidden;width:0;height:0;}/*http://perishablepress.com/press/2008/02/05/lessons-learned-concerning-the-clearfix-css-hack*/
+.columns,
+.clearfix{display:inline-block;}
+* html .columns,
+* html .clearfix{height:1%;}
+.columns,
+.clearfix{display:block;}
+body{font-size:75%;line-height:150%;font-family:sans-serif;}
+
+/* ====== Headings ====== */
+h1{font-size:196%;font-weight:normal;font-style:normal;color:rgb(199,67,5);}
+h2{font-size:167%;font-weight:normal;font-style:normal;color:rgb(199,67,5);        }
+h3{font-size:146.5%;font-weight:normal;font-style:normal;color:rgb(255,124,0);}
+h4{font-size:123.1%;font-weight:normal;font-style:normal;color:#333;               }
+h5{font-size:108%;font-weight:bold;font-style:normal;color:rgb(199,67,5);display:block;          }
+h6{font-size:108%;font-weight:normal;font-style:italic;color:#333;display:block;                 }
+
+
+/* === lists === */
+ul.simpleList   {   list-style-type: square; margin-left: 30px; margin-right: 30px;  }
+ol.simpleList   {   list-style-type: decimal; margin-left: 30px; margin-right: 30px; }
+
+ul.baseList li  {   list-style-image: url(images/bullet-circle.png); margin-left: 40px; }
+ol.baseList li  {   list-style-type: decimal; margin-left: 40px; }
+
+address,p           {   margin-bottom: 1.5em;   }
+.pull               {   float:left;clear:left;display:block;}
+.push               {   float:right;clear:right;display:block;}

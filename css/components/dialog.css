@@ -1,0 +1,42 @@
+#blackout                   {   background-color: rgb(41, 40, 36); position: fixed; _position: fixed;
+                                top: 0; left: 0; right: 0; bottom: 0; z-index: 999; }
+.ui-dialog                  {   background-color: rgb(249,249,249);
+                                border: solid 1px black;
+                                -webkit-box-shadow: 0px 0px 15px black;-moz-box-shadow: 0px 0px 15px black;-box-shadow: 0px 0px 15px black;
+                                position: fixed; _position: absolute; left: 50%; margin-left: -25%; top: 7em;
+                                width: 50%; z-index: 1000;
+                            }
+.ui-dialog .ui-dialog-body  {   padding: 1em;   }
+.ui-dialog .close           {   position: absolute; top: -20px; right: 10px;
+                                border-bottom: 1px solid rgb(148, 25, 18);
+                                color: White; font-weight: bold;
+                                text-transform: uppercase;
+                                background-color: rgb(242,26,0);
+                                padding: 0 .25em;
+                            }
+.ui-dialog .close:focus,
+.ui-dialog .close:hover     {   background-color: rgb(255,46,21); }
+.ui-dialog .close:active    {   background-color: rgb(208,15,8); }
+
+.ui-dialog .ww-head,
+.ui-dialog .ww-body,
+.ui-dialog .ww-foot         {   background: none; margin: 0; padding: 0; border: none 0px; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;  }
+                                    
+
+.ui-dialog h1       {   margin-bottom: 1em;  }
+.ui-dialog p        {   text-align: justify; }
+
+/* === image-on-left-or-right === */
+.ui-dialog .iol img {   float: left; margin-right: 1em; margin-bottom: 1em;   }
+.ui-dialog .ior img {   float: right; margin-left: 1em; margin-bottom: 1em;   }
+
+
+
+/* === mod pop === */
+.ui-dialog .dialog      {   margin: -1em; }
+.ui-dialog .dialog .hd  {   background-color: rgb(55,55,55);
+                            color: White; }
+.dialog .hd             {   padding: .25em 1em; }
+.dialog .hd h1          {   margin: 0;
+                            padding-bottom: .125em; }
+.dialog .bd             {   padding: 1em; }

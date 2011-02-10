@@ -1,0 +1,31 @@
+.accordion .section                 {   border-top:1px dashed rgb(193,193,193); border-bottom:1px dashed transparent; margin-bottom: 0;
+                                        padding-top: .4166em; padding-bottom: .4166em; clear:both; }
+.accordion .first                   {   border-top:0px none; }
+.accordion .header                  {   cursor:pointer;position:relative;zoom:1;/* ie6 - trigger hasLayout */}
+.accordion .header:hover            {   color: Black; }
+.accordion .accordion .section      {   border-color: transparent;  }
+
+.accordion .header h6,
+.accordion .header .mock_h6         {   padding-left: 14px; }
+
+    /* === icons — initialized during js init phase === */
+.accordion .header .ui-icon         {   float: left; margin: 6px 4px 0; }
+
+    /* === ACCORDION TOOLS === */
+.accordion-tools                    {   overflow: hidden; z-index: 2; }
+.accordion-tools span               {   margin-left: .433em; cursor: pointer; display: block; float: right;
+                                        color: rgb(163,163,163); font-size: 10px; line-height: 1.5em; padding: 0 .25em; }
+.accordion-tools span:hover         {   color: rgb(0,0,0); background-color: rgb(231,231,231); }
+
+
+/* === Templates === */
+.footnotes .section                 {   margin: 0 -.75em; border: none 0px; padding: 0;  }
+.footnotes .section .header         {   background-color: rgb(170,170,170); border: solid 1px rgb(150,150,150); }
+.footnotes .collapsed .header:hover {   background-color: rgb(150,150,150); }
+.footnotes .expanded .header        {   background: rgb(250,83,15) url(images/bg-ww-head.gif) repeat-y right center; /* TODO — update path */
+                                        border-color: rgb(195,30,45); }
+.footnotes .expanded .header:hover  {   background: rgb(232,68,8) none; }
+.footnotes .accordion-tools         {   overflow: visible; }
+.footnotes .section h6              {   color: White;   }
+.footnotes .window                  {   padding: .25em .75em; }
+.footnotes p                        {   margin: .5em 0; }

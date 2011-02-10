@@ -1,0 +1,39 @@
+.slider                     {   position: relative;    }
+/* === Slider View === */
+    /* = window = */
+.slider .window             {   padding: .75em 1.5em 1.5em;
+                                border: solid 1px rgb(201,201,201); background-color: rgb(249,249,249); /* inheriting theme of ww-body*/ 
+                                font-size: 14px;
+                            }
+    /* = nav = */
+.slider .snav               {   position: absolute; bottom: 2px;_bottom: 5px;
+                                text-align: center; width: 100%; }
+.slider .snav label         {   display: inline; text-transform: uppercase;
+                                line-height: 1;vertical-align: middle; }
+.slider .snav ul            {   display: inline; }
+.slider .snav li            {   display: inline; margin-left: 3px; }
+.slider .snav a             {   background-color:White; display:inline-block; text-indent:-9999px; height:8px; width:8px; 
+                                border:solid 1px rgb(155,155,155); -webkit-border-radius:4px; -moz-border-radius:4px; -o-border-radius:4px; border-radius:4px;
+                                line-height:1; vertical-align:middle;
+                                _display:inline; _float:left; _line-height: 10px;
+                            }
+.slider .snav a:focus,.slider .snav a:hover,
+.slider .snav li.selected a {   background-color: rgb(250, 83, 15); border-color: rgb(224,70,8);  }
+
+
+    /* = edit view = */
+.slider-edit .section           {   margin-bottom: 0; }
+.slider-edit .section:first-child{  padding-bottom: 1.5em; }
+.slider-edit .section+.section  {   padding: 1.5em 0; border-top: dashed 1px rgb(155,155,155); }
+
+
+/* === JRMRacing.com FP === */
+.slider h1      {   margin-bottom: 0; }
+.slider .meta   {   margin: 1.5em 0; }
+.slider p       {   font-size:14px;line-height: 21px; color:rgb(45,33,20); }
+.slider .window {   height: 260px;  }
+
+.slider .ir img {   float: right; padding-left: 10px; }
+.slider .il img {   float: left; padding-right: 10px; }
+.slider .ib img {   }
+.slider .it img {   }
