@@ -1,6 +1,21 @@
 #blackout                   {   background-color: rgb(41, 40, 36); position: fixed; _position: fixed;
                                 top: 0; left: 0; right: 0; bottom: 0; z-index: 999; }
+#dialogContainer            {   display:none;background-color:rgb(249,249,249);border:1px solid rgb(55,55,55);
+                                -webkit-box-shadow: 0 0 5px rgba(0,0,0,.5);-moz-box-shadow: 0 0 5px rgba(0,0,0,.5);-o-box-shadow: 0 0 5px rgba(0,0,0,.5);-ie-box-shadow: 0 0 5px rgba(0,0,0,.5);box-shadow: 0 0 5px rgba(0,0,0,.5);
+                                -webkit-border-radius:6px;-moz-border-radius:6px;-o-border-radius:6px;-ie-border-radius:6px;border-radius:6px;
+                            }
+
+
+div.dialog                  {   display:none; }
+
+
+
+
+
+
+
 .ui-dialog                  {   background-color: rgb(249,249,249);
+
                                 border: solid 1px black;
                                 -webkit-box-shadow: 0px 0px 15px black;-moz-box-shadow: 0px 0px 15px black;-box-shadow: 0px 0px 15px black;
                                 position: fixed; _position: absolute; left: 50%; margin-left: -25%; top: 7em;

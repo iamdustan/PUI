@@ -1,4 +1,3 @@
-/* Thanks to Paul Irish http://www.html5boilerplate.com for this little logging function */
 window.log = function () {
     log.history = log.history || [];
     log.history.push( arguments );
@@ -7,9 +6,11 @@ window.log = function () {
     }
 };
 
-var PUI = window.PUI || {};
+(function($){function Countdown(){this.regional=[];this.regional['']={labels:['Years','Months','Weeks','Days','Hours','Minutes','Seconds'],labels1:['Year','Month','Week','Day','Hour','Minute','Second'],compactLabels:['y','m','w','d'],whichLabels:null,timeSeparator:':',isRTL:false};this._defaults={until:null,since:null,timezone:null,serverSync:null,format:'dHMS',layout:'',compact:false,significant:0,description:'',expiryUrl:'',expiryText:'',alwaysExpire:false,onExpiry:null,onTick:null,tickInterval:1};$.extend(this._defaults,this.regional['']);this._serverSyncs=[];}var PROP_NAME='countdown';var Y=0;var O=1;var W=2;var D=3;var H=4;var M=5;var S=6;$.extend(Countdown.prototype,{markerClassName:'hasCountdown',_timer:setInterval(function(){$.countdown._updateTargets();},980),_timerTargets:[],setDefaults:function(options){this._resetExtraLabels(this._defaults,options);extendRemove(this._defaults,options||{});},UTCDate:function(tz,year,month,day,hours,mins,secs,ms){if(typeof year=='object'&&year.constructor==Date){ms=year.getMilliseconds();secs=year.getSeconds();mins=year.getMinutes();hours=year.getHours();day=year.getDate();month=year.getMonth();year=year.getFullYear();}var d=new Date();d.setUTCFullYear(year);d.setUTCDate(1);d.setUTCMonth(month||0);d.setUTCDate(day||1);d.setUTCHours(hours||0);d.setUTCMinutes((mins||0)-(Math.abs(tz)<30?tz*60:tz));d.setUTCSeconds(secs||0);d.setUTCMilliseconds(ms||0);return d;},periodsToSeconds:function(periods){return periods[0]*31557600+periods[1]*2629800+periods[2]*604800+periods[3]*86400+periods[4]*3600+periods[5]*60+periods[6];},_settingsCountdown:function(target,name){if(!name){return $.countdown._defaults;}var inst=$.data(target,PROP_NAME);return(name=='all'?inst.options:inst.options[name]);},_attachCountdown:function(target,options){var $target=$(target);if($target.hasClass(this.markerClassName)){return;}$target.addClass(this.markerClassName);var inst={options:$.extend({},options),_periods:[0,0,0,0,0,0,0]};$.data(target,PROP_NAME,inst);this._changeCountdown(target);},_addTarget:function(target){if(!this._hasTarget(target)){this._timerTargets.push(target);}},_hasTarget:function(target){return($.inArray(target,this._timerTargets)>-1);},_removeTarget:function(target){this._timerTargets=$.map(this._timerTargets,function(value){return(value==target?null:value);});},_updateTargets:function(){for(var i=this._timerTargets.length-1;i>=0;i--){this._updateCountdown(this._timerTargets[i]);}},_updateCountdown:function(target,inst){var $target=$(target);inst=inst||$.data(target,PROP_NAME);if(!inst){return;}$target.html(this._generateHTML(inst));$target[(this._get(inst,'isRTL')?'add':'remove')+'Class']('countdown_rtl');var onTick=this._get(inst,'onTick');if(onTick){var periods=inst._hold!='lap'?inst._periods:this._calculatePeriods(inst,inst._show,this._get(inst,'significant'),new Date());var tickInterval=this._get(inst,'tickInterval');if(tickInterval==1||this.periodsToSeconds(periods)%tickInterval==0){onTick.apply(target,[periods]);}}var expired=inst._hold!='pause'&&(inst._since?inst._now.getTime()<inst._since.getTime():inst._now.getTime()>=inst._until.getTime());if(expired&&!inst._expiring){inst._expiring=true;if(this._hasTarget(target)||this._get(inst,'alwaysExpire')){this._removeTarget(target);var onExpiry=this._get(inst,'onExpiry');if(onExpiry){onExpiry.apply(target,[]);}var expiryText=this._get(inst,'expiryText');if(expiryText){var layout=this._get(inst,'layout');inst.options.layout=expiryText;this._updateCountdown(target,inst);inst.options.layout=layout;}var expiryUrl=this._get(inst,'expiryUrl');if(expiryUrl){window.location=expiryUrl;}}inst._expiring=false;}else if(inst._hold=='pause'){this._removeTarget(target);}$.data(target,PROP_NAME,inst);},_changeCountdown:function(target,options,value){options=options||{};if(typeof options=='string'){var name=options;options={};options[name]=value;}var inst=$.data(target,PROP_NAME);if(inst){this._resetExtraLabels(inst.options,options);extendRemove(inst.options,options);this._adjustSettings(target,inst);$.data(target,PROP_NAME,inst);var now=new Date();if((inst._since&&inst._since<now)||(inst._until&&inst._until>now)){this._addTarget(target);}this._updateCountdown(target,inst);}},_resetExtraLabels:function(base,options){var changingLabels=false;for(var n in options){if(n!='whichLabels'&&n.match(/[Ll]abels/)){changingLabels=true;break;}}if(changingLabels){for(var n in base){if(n.match(/[Ll]abels[0-9]/)){base[n]=null;}}}},_adjustSettings:function(target,inst){var now;var serverSync=this._get(inst,'serverSync');var serverOffset=0;var serverEntry=null;for(var i=0;i<this._serverSyncs.length;i++){if(this._serverSyncs[i][0]==serverSync){serverEntry=this._serverSyncs[i][1];break;}}if(serverEntry!=null){serverOffset=(serverSync?serverEntry:0);now=new Date();}else{var serverResult=(serverSync?serverSync.apply(target,[]):null);now=new Date();serverOffset=(serverResult?now.getTime()-serverResult.getTime():0);this._serverSyncs.push([serverSync,serverOffset]);}var timezone=this._get(inst,'timezone');timezone=(timezone==null?-now.getTimezoneOffset():timezone);inst._since=this._get(inst,'since');if(inst._since!=null){inst._since=this.UTCDate(timezone,this._determineTime(inst._since,null));if(inst._since&&serverOffset){inst._since.setMilliseconds(inst._since.getMilliseconds()+serverOffset);}}inst._until=this.UTCDate(timezone,this._determineTime(this._get(inst,'until'),now));if(serverOffset){inst._until.setMilliseconds(inst._until.getMilliseconds()+serverOffset);}inst._show=this._determineShow(inst);},_destroyCountdown:function(target){var $target=$(target);if(!$target.hasClass(this.markerClassName)){return;}this._removeTarget(target);$target.removeClass(this.markerClassName).empty();$.removeData(target,PROP_NAME);},_pauseCountdown:function(target){this._hold(target,'pause');},_lapCountdown:function(target){this._hold(target,'lap');},_resumeCountdown:function(target){this._hold(target,null);},_hold:function(target,hold){var inst=$.data(target,PROP_NAME);if(inst){if(inst._hold=='pause'&&!hold){inst._periods=inst._savePeriods;var sign=(inst._since?'-':'+');inst[inst._since?'_since':'_until']=this._determineTime(sign+inst._periods[0]+'y'+sign+inst._periods[1]+'o'+sign+inst._periods[2]+'w'+sign+inst._periods[3]+'d'+sign+inst._periods[4]+'h'+sign+inst._periods[5]+'m'+sign+inst._periods[6]+'s');this._addTarget(target);}inst._hold=hold;inst._savePeriods=(hold=='pause'?inst._periods:null);$.data(target,PROP_NAME,inst);this._updateCountdown(target,inst);}},_getTimesCountdown:function(target){var inst=$.data(target,PROP_NAME);return(!inst?null:(!inst._hold?inst._periods:this._calculatePeriods(inst,inst._show,this._get(inst,'significant'),new Date())));},_get:function(inst,name){return(inst.options[name]!=null?inst.options[name]:$.countdown._defaults[name]);},_determineTime:function(setting,defaultTime){var offsetNumeric=function(offset){var time=new Date();time.setTime(time.getTime()+offset*1000);return time;};var offsetString=function(offset){offset=offset.toLowerCase();var time=new Date();var year=time.getFullYear();var month=time.getMonth();var day=time.getDate();var hour=time.getHours();var minute=time.getMinutes();var second=time.getSeconds();var pattern=/([+-]?[0-9]+)\s*(s|m|h|d|w|o|y)?/g;var matches=pattern.exec(offset);while(matches){switch(matches[2]||'s'){case's':second+=parseInt(matches[1],10);break;case'm':minute+=parseInt(matches[1],10);break;case'h':hour+=parseInt(matches[1],10);break;case'd':day+=parseInt(matches[1],10);break;case'w':day+=parseInt(matches[1],10)*7;break;case'o':month+=parseInt(matches[1],10);day=Math.min(day,$.countdown._getDaysInMonth(year,month));break;case'y':year+=parseInt(matches[1],10);day=Math.min(day,$.countdown._getDaysInMonth(year,month));break;}matches=pattern.exec(offset);}return new Date(year,month,day,hour,minute,second,0);};var time=(setting==null?defaultTime:(typeof setting=='string'?offsetString(setting):(typeof setting=='number'?offsetNumeric(setting):setting)));if(time)time.setMilliseconds(0);return time;},_getDaysInMonth:function(year,month){return 32-new Date(year,month,32).getDate();},_normalLabels:function(num){return num;},_generateHTML:function(inst){var significant=this._get(inst,'significant');inst._periods=(inst._hold?inst._periods:this._calculatePeriods(inst,inst._show,significant,new Date()));var shownNonZero=false;var showCount=0;var sigCount=significant;var show=$.extend({},inst._show);for(var period=Y;period<=S;period++){shownNonZero|=(inst._show[period]=='?'&&inst._periods[period]>0);show[period]=(inst._show[period]=='?'&&!shownNonZero?null:inst._show[period]);showCount+=(show[period]?1:0);sigCount-=(inst._periods[period]>0?1:0);}var showSignificant=[false,false,false,false,false,false,false];for(var period=S;period>=Y;period--){if(inst._show[period]){if(inst._periods[period]){showSignificant[period]=true;}else{showSignificant[period]=sigCount>0;sigCount--;}}}var compact=this._get(inst,'compact');var layout=this._get(inst,'layout');var labels=(compact?this._get(inst,'compactLabels'):this._get(inst,'labels'));var whichLabels=this._get(inst,'whichLabels')||this._normalLabels;var timeSeparator=this._get(inst,'timeSeparator');var description=this._get(inst,'description')||'';var showCompact=function(period){var labelsNum=$.countdown._get(inst,'compactLabels'+whichLabels(inst._periods[period]));return(show[period]?inst._periods[period]+(labelsNum?labelsNum[period]:labels[period])+' ':'');};var showFull=function(period){var labelsNum=$.countdown._get(inst,'labels'+whichLabels(inst._periods[period]));return((!significant&&show[period])||(significant&&showSignificant[period])?'<span class="countdown_section"><span class="countdown_amount">'+inst._periods[period]+'</span><br/>'+(labelsNum?labelsNum[period]:labels[period])+'</span>':'');};return(layout?this._buildLayout(inst,show,layout,compact,significant,showSignificant):((compact?'<span class="countdown_row countdown_amount'+(inst._hold?' countdown_holding':'')+'">'+showCompact(Y)+showCompact(O)+showCompact(W)+showCompact(D)+(show[H]?this._minDigits(inst._periods[H],2):'')+(show[M]?(show[H]?timeSeparator:'')+this._minDigits(inst._periods[M],2):'')+(show[S]?(show[H]||show[M]?timeSeparator:'')+this._minDigits(inst._periods[S],2):''):'<span class="countdown_row countdown_show'+(significant||showCount)+(inst._hold?' countdown_holding':'')+'">'+showFull(Y)+showFull(O)+showFull(W)+showFull(D)+showFull(H)+showFull(M)+showFull(S))+'</span>'+(description?'<span class="countdown_row countdown_descr">'+description+'</span>':'')));},_buildLayout:function(inst,show,layout,compact,significant,showSignificant){var labels=this._get(inst,(compact?'compactLabels':'labels'));var whichLabels=this._get(inst,'whichLabels')||this._normalLabels;var labelFor=function(index){return($.countdown._get(inst,(compact?'compactLabels':'labels')+whichLabels(inst._periods[index]))||labels)[index];};var digit=function(value,position){return Math.floor(value/position)%10;};var subs={desc:this._get(inst,'description'),sep:this._get(inst,'timeSeparator'),yl:labelFor(Y),yn:inst._periods[Y],ynn:this._minDigits(inst._periods[Y],2),ynnn:this._minDigits(inst._periods[Y],3),y1:digit(inst._periods[Y],1),y10:digit(inst._periods[Y],10),y100:digit(inst._periods[Y],100),y1000:digit(inst._periods[Y],1000),ol:labelFor(O),on:inst._periods[O],onn:this._minDigits(inst._periods[O],2),onnn:this._minDigits(inst._periods[O],3),o1:digit(inst._periods[O],1),o10:digit(inst._periods[O],10),o100:digit(inst._periods[O],100),o1000:digit(inst._periods[O],1000),wl:labelFor(W),wn:inst._periods[W],wnn:this._minDigits(inst._periods[W],2),wnnn:this._minDigits(inst._periods[W],3),w1:digit(inst._periods[W],1),w10:digit(inst._periods[W],10),w100:digit(inst._periods[W],100),w1000:digit(inst._periods[W],1000),dl:labelFor(D),dn:inst._periods[D],dnn:this._minDigits(inst._periods[D],2),dnnn:this._minDigits(inst._periods[D],3),d1:digit(inst._periods[D],1),d10:digit(inst._periods[D],10),d100:digit(inst._periods[D],100),d1000:digit(inst._periods[D],1000),hl:labelFor(H),hn:inst._periods[H],hnn:this._minDigits(inst._periods[H],2),hnnn:this._minDigits(inst._periods[H],3),h1:digit(inst._periods[H],1),h10:digit(inst._periods[H],10),h100:digit(inst._periods[H],100),h1000:digit(inst._periods[H],1000),ml:labelFor(M),mn:inst._periods[M],mnn:this._minDigits(inst._periods[M],2),mnnn:this._minDigits(inst._periods[M],3),m1:digit(inst._periods[M],1),m10:digit(inst._periods[M],10),m100:digit(inst._periods[M],100),m1000:digit(inst._periods[M],1000),sl:labelFor(S),sn:inst._periods[S],snn:this._minDigits(inst._periods[S],2),snnn:this._minDigits(inst._periods[S],3),s1:digit(inst._periods[S],1),s10:digit(inst._periods[S],10),s100:digit(inst._periods[S],100),s1000:digit(inst._periods[S],1000)};var html=layout;for(var i=Y;i<=S;i++){var period='yowdhms'.charAt(i);var re=new RegExp('\\{'+period+'<\\}(.*)\\{'+period+'>\\}','g');html=html.replace(re,((!significant&&show[i])||(significant&&showSignificant[i])?'$1':''));}$.each(subs,function(n,v){var re=new RegExp('\\{'+n+'\\}','g');html=html.replace(re,v);});return html;},_minDigits:function(value,len){value=''+value;if(value.length>=len){return value;}value='0000000000'+value;return value.substr(value.length-len);},_determineShow:function(inst){var format=this._get(inst,'format');var show=[];show[Y]=(format.match('y')?'?':(format.match('Y')?'!':null));show[O]=(format.match('o')?'?':(format.match('O')?'!':null));show[W]=(format.match('w')?'?':(format.match('W')?'!':null));show[D]=(format.match('d')?'?':(format.match('D')?'!':null));show[H]=(format.match('h')?'?':(format.match('H')?'!':null));show[M]=(format.match('m')?'?':(format.match('M')?'!':null));show[S]=(format.match('s')?'?':(format.match('S')?'!':null));return show;},_calculatePeriods:function(inst,show,significant,now){inst._now=now;inst._now.setMilliseconds(0);var until=new Date(inst._now.getTime());if(inst._since){if(now.getTime()<inst._since.getTime()){inst._now=now=until;}else{now=inst._since;}}else{until.setTime(inst._until.getTime());if(now.getTime()>inst._until.getTime()){inst._now=now=until;}}var periods=[0,0,0,0,0,0,0];if(show[Y]||show[O]){var lastNow=$.countdown._getDaysInMonth(now.getFullYear(),now.getMonth());var lastUntil=$.countdown._getDaysInMonth(until.getFullYear(),until.getMonth());var sameDay=(until.getDate()==now.getDate()||(until.getDate()>=Math.min(lastNow,lastUntil)&&now.getDate()>=Math.min(lastNow,lastUntil)));var getSecs=function(date){return(date.getHours()*60+date.getMinutes())*60+date.getSeconds();};var months=Math.max(0,(until.getFullYear()-now.getFullYear())*12+until.getMonth()-now.getMonth()+((until.getDate()<now.getDate()&&!sameDay)||(sameDay&&getSecs(until)<getSecs(now))?-1:0));periods[Y]=(show[Y]?Math.floor(months/12):0);periods[O]=(show[O]?months-periods[Y]*12:0);now=new Date(now.getTime());var wasLastDay=(now.getDate()==lastNow);var lastDay=$.countdown._getDaysInMonth(now.getFullYear()+periods[Y],now.getMonth()+periods[O]);if(now.getDate()>lastDay){now.setDate(lastDay);}now.setFullYear(now.getFullYear()+periods[Y]);now.setMonth(now.getMonth()+periods[O]);if(wasLastDay){now.setDate(lastDay);}}var diff=Math.floor((until.getTime()-now.getTime())/1000);var extractPeriod=function(period,numSecs){periods[period]=(show[period]?Math.floor(diff/numSecs):0);diff-=periods[period]*numSecs;};extractPeriod(W,604800);extractPeriod(D,86400);extractPeriod(H,3600);extractPeriod(M,60);extractPeriod(S,1);if(diff>0&&!inst._since){var multiplier=[1,12,4.3482,7,24,60,60];var lastShown=S;var max=1;for(var period=S;period>=Y;period--){if(show[period]){if(periods[lastShown]>=max){periods[lastShown]=0;diff=1;}if(diff>0){periods[period]++;diff=0;lastShown=period;max=1;}}max*=multiplier[period];}}if(significant){for(var period=Y;period<=S;period++){if(significant&&periods[period]){significant--;}else if(!significant){periods[period]=0;}}}return periods;}});function extendRemove(target,props){$.extend(target,props);for(var name in props){if(props[name]==null){target[name]=null;}}return target;}$.fn.countdown=function(options){var otherArgs=Array.prototype.slice.call(arguments,1);if(options=='getTimes'||options=='settings'){return $.countdown['_'+options+'Countdown'].apply($.countdown,[this[0]].concat(otherArgs));}return this.each(function(){if(typeof options=='string'){$.countdown['_'+options+'Countdown'].apply($.countdown,[this].concat(otherArgs));}else{$.countdown._attachCountdown(this,options);}});};$.countdown=new Countdown();})(jQuery);
 
-PUI.utils = {
+var WLIB = window.WLIB || {};
+
+WLIB.utils = {
     /*  Returns base path of url for direct referencing. Also manages localhost state for asp.net development
      *  Return value examples — http://www.jrmracing.com/ || http://localhost:54213/www.source/
      */
@@ -30,7 +31,7 @@ PUI.utils = {
     isDevelopment : function () {
         return ( window.location.href.indexOf('localhost') != -1 ) ? true : false;
     },
-    extend : function( dest, src ) {e
+    extend : function( dest, src ) {
         for ( var prop in src ) {
             dest[prop] = src[prop];
         }
@@ -40,7 +41,7 @@ PUI.utils = {
 
 
 
-PUI.templates = {
+WLIB.templates = {
     dialog :
         '<div class="ui-dialog small" style="display: block">' +
         '<div class="ui-dialog-head">' +
@@ -48,13 +49,15 @@ PUI.templates = {
         '<div class="ui-dialog-body"></div>' +
         '<div class="ui-dialog-foot"></div>' +
         '</div><div id="blackout"><span>test</span></div>'
+  , baseWidget :
+        '<div class="ww"><div class="ww-head"></div><div class="ww-body"></div><div class="ww-foot"></div></div>'
 };
 
 /*
  * WLIB - accordian ui widget
  * div.accordian>div.section>div.header+div.window
  */
-PUI.accordion = function ( opt ) {
+WLIB.accordion = function ( opt ) {
     var options = {
         selector : 'div.accordion'
       , expanded : 'expanded'
@@ -121,13 +124,13 @@ PUI.accordion = function ( opt ) {
         }
     });
 };
-PUI.accordion();
+WLIB.accordion();
 
 /*
  * WLIB - tab ui widget
  * div.js-tabs.tabs>ul.tnav+>div.window
  */
-PUI.tabs = function ( selector, opt ) {
+WLIB.tabs = function ( selector, opt ) {
     var options = {
         selector : selector || '.js-tabs'
       , initial : 1
@@ -156,14 +159,14 @@ PUI.tabs = function ( selector, opt ) {
         }).filter( ':nth-child(' + options.initial + ')' ).click();
     });
 };
-PUI.tabs();
+WLIB.tabs();
 
 
 /*
  * WLIB - hide input labels
  * if div.input-wrapper has class .js-label, the label will be hidden on input
  */
-PUI.hideLabel = (function () {
+WLIB.hideLabel = (function () {
     $('div.js-label').find('.input-wrapper input[type=text], .input-wrapper input[type=password]').each(function () {
         var self = $(this)
           , label = self.parents('.input-row').find('label.js-label');
@@ -201,7 +204,7 @@ PUI.hideLabel = (function () {
  * div.star-rating is the wrapper around all stars
  * TODO - update this entire thing
  */
-PUI.starRating = (function () {
+WLIB.starRating = (function () {
     var star = $('div.star-rating > span.starwrap > a.star')
       , curRating = $('div.star-rating > span.current-rating')
       , crw = parseFloat( $(curRating).text() ) * 20;
@@ -215,143 +218,59 @@ PUI.starRating = (function () {
     );
 })();
 
-/*
- * WLIB - Dialog Overlay
- * TODO - update this entire thing
- */
-PUI.dialog = function () {
-    var _init = function ( ascx ) {
-            var dialog = $( WLIB.templates.dialog ).prependTo("body>form")
-              , close_btn = dialog.find('a.close')
-              , content_area = dialog.find("div.ui-dialog-body")
-              , bo = $("#blackout").css({ opacity: 0, display: "block" });
-            _open( dialog, content_area, ascx, bo );
-            _close( dialog, close_btn, bo );
-        },
 
-        _open = function (dialog, content_area, ascx, bo) {
-            ascx.appendTo( content_area );
-            bo.animate({ opacity: .5 }, 500);
 
-            if (dialog.find("input")) { dialog.find("input:first").focus(); }
-        },
-
-        _close = function (dialog, close_btn, bo) {
-            $(document).keyup(function (e) { if (e.keyCode === 27) { close_me(); } });
-            close_btn.click(function () { close_me(); return false; });
-            bo.click(function () { close_me(); });
-        
-            function close_me () {
-                bo.animate({ opacity: 0 }, 100, function () {
-                    $(this).remove();
-                    dialog.remove();
-                });
-            }
-        };
-
-    (function init() {
-        var link = $("a.dialog")
-          , ascx = $("#ctl00_ascxHolder>div");        
-        
-        if ( window.location.hash ){
-            var item = window.location.hash.replace('#', '');
-            ascx = $('#' + item)
-            if ( ascx.hasClass('dialog') ) {
-                _init( ascx.clone().removeAttr('style') );
-            };
+(function file_uploader () {
+    WLIB.fileuploader = function () {
+        if( $.browser.msie ) {
+            return;
         }
+        var input = $('.upload-wrapper input[type=file]')
+          , fake_input;
+        
+        input.parents('.upload-wrapper').addClass('fakify');
+        input.before('<span class="ui-icon ui-icon-upload"></span><div class="fake_input">Upload new image</div>')
+        fake_input = input.siblings('.fake_input');
 
-        if ( ascx.find("div.error").length > 0 ) { _init( ascx.removeAttr("style").detach() ); }
-        if ( link.not(':disabled') ) {
-            link.click(function () {
-                if ( $(this).hasClass('dialog-sibling') ) {
-                    ascx = $(this).next('div');
-                    _init(ascx.clone().removeAttr("style"));
-                } else {
-                    _init( ascx.removeAttr("style").detach() );
-                }
-                return false;
+
+        input.each(function () {
+            $(this).bind('change focus', function( e ) {
+                $(this).siblings('div.fake_input').text( $(this).val() );
+            });
+        });
+
+    };
+    WLIB.fileuploader();
+});//();
+
+
+WLIB.updateBrowserMessage = function () {
+    //WLIB.templates.baseWidget
+};
+
+
+function fbs_click() {
+    u = location.href;
+    t = document.title;
+    window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');
+    return false;
+};
+
+$(document).ready(function () {
+    $('a.sfb').bind("click", fbs_click );
+    $('table').removeAttr('rules').removeAttr('border'); // remove .net attributes added to Firefox
+
+    $('#menu').find('>li>a').each(function () {
+        if ( $(this).find('ul.sub')[0] ) {
+            var $this = $(this),
+                sub = $this.next('ul.sub');
+
+            $this.hover(function () {
+                sub.fadeIn(250);
+            }, function () {
+                sub.fadeOut(250);
             });
         }
-    })();
-};
-PUI.dialog();
-
-
-/*
- * The only thing I have to say about this is
- * MSIE, I hate you. Every single one of you.
- */
-PUI.fileuploader = function () {
-    if( $.browser.msie ) {
-        return;
-    }
-    var input = $('.upload-wrapper input[type=file]')
-      , fake_input;
-    
-    input.parents('.upload-wrapper').addClass('fakify');
-    input.before('<span class="ui-icon ui-icon-upload"></span><div class="fake_input">Upload new image</div>')
-    fake_input = input.siblings('.fake_input');
-
-
-    input.each(function () {
-        $(this).bind('change focus', function( e ) {
-            $(this).siblings('div.fake_input').text( $(this).val() );
-        });
     });
-
-};
-PUI.fileuploader();
-
-/*
- * WLIB - Slideshow widget
- * div.js-slideshow>div.tools+div.image-wrapper
- *
- * There actually is no slideshow part built in yet. And the counter hasn't been implemented yet, either.
- */
-PUI.slideshow = function () {
-    var s = $('.js-slideshow'),
-        prev = s.find('a.prev'),
-        next = s.find('a.next'),
-        counter = s.find('small.current-image'),
-        playing = false;
-    
-    s.find('>div.image-wrapper img:not(:first)').css({'opacity' : 0}).hide();
-    
-    function updateCounter () { // really weird counting bug going on here...
-        counter.text( (s.find('>div.image-wrapper img:visible').index() + 1) + ' / ' + s.find('img').length );
-    };
-    
-    prev.click(function (e) {
-        var img = s.find('>div.image-wrapper img:visible');
-        img.stop().animate({ 'opacity' : 0 }, function () {
-            img.hide();
-            if ( img.prev().length > 0 ) {
-                img.prev().show()
-                    .stop().animate({'opacity' : 1}, updateCounter);
-            } else {
-                s.find('>div.image-wrapper img:last').show()
-                    .stop().animate({'opacity' : 1}, updateCounter);
-            }
-        });
-        e.preventDefault();
-    });
-
-    next.click(function (e) {
-        var img = s.find('>div.image-wrapper img:visible');
-        img.stop().animate({ 'opacity' : 0 }, function () {
-            img.hide();
-            if ( img.next().length > 0 ) {
-                img.next().show()
-                    .stop().animate({'opacity' : 1 }, updateCounter);
-            } else {
-                s.find('>div.image-wrapper img:first').show()
-                    .stop().animate({'opacity' : 1}, updateCounter);
-            }
-        });
-        e.preventDefault();
-    });
-
-    updateCounter();
-};
-PUI.slideshow();
+});
+// TODO — namespace all UI events and controls into UI namespace. (eg — WLIB.ui.tabs)
