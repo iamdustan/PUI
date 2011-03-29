@@ -1,0 +1,57 @@
+ /* === photo-gallery === */
+.photo-gallery                  {   border: solid 1px rgb(201,201,201);
+                                    background-color:rgb(247,247,247);
+                                    
+                                    margin-bottom:1.5em;
+                                }
+.photo-gallery .tools           {   background-color: rgb(253,253,253);
+                                    background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #ffffff),color-stop(.7, #f0f0f0));
+                                    background-image: -moz-linear-gradient(center bottom,#ffffff 70%,#f0f0f0 100%);
+                                    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f0f0f0, endColorstr=#ffffff);
+                                    ms-filter: "progid:DXImageTransform.Microsoft.gradient (GradientType=0, startColorstr=#f0f0f0, endColorstr=#ffffff)";
+                                    
+                                    border-bottom: solid 1px rgb(201,201,201);text-align: right;
+                                }
+.photo-gallery .image-wrapper   {   padding:.75em; }
+
+.photo-gallery .image-wrapper img{  display:block;width:100%; }
+
+
+.tabs .photo-gallery            {   border: none 0px; background-color: transparent; }
+
+
+.photo-gallery a::selection         {   color:inherit;background-color:transparent;}
+/* === THEMING === */
+.photo-gallery .tools a             {   background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #ffffff),color-stop(1, #f0f0f0));
+                                        background-image: -moz-linear-gradient(center bottom,#ffffff 0%,#f0f0f0 100%);
+                                        filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f0f0f0, endColorstr=#ffffff);
+                                        -ms-filter: "progid:DXImageTransform.Mic}rosoft.gradient (GradientType=0, startColorstr=#f0f0f0, endColorstr=#ffffff)";
+                                        
+                                        padding:0 5px;font-size:11px;line-height:22px;font-weight:bold;display:inline-block;*zoom:1;color:#444;cursor:pointer;
+                                    }
+.photo-gallery .tools a:hover       {   color:rgb(104,30,0);background:rgba(255,255,255,.5); }
+.photo-gallery .tools a:active      {   background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #f0f0f0),color-stop(1, #ffffff));
+                                        background-image: -moz-linear-gradient(center bottom,#f0f0f0 0%,#ffffff 100%);
+                                        filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#ffffff, endColorstr=#f0f0f0);
+                                        -ms-filter: "progid:DXImageTransform.Microsoft.gradient (GradientType=0, startColorstr=#ffffff, endColorstr=#f0f0f0)";
+
+                                        color:rgb(144,44,7);
+                                    }
+.photo-gallery .tools a.prev,
+.photo-gallery .tools a.next        {   border-left:1px solid rgb(201,201,201); }
+.photo-gallery .tools a.lightbox,
+.photo-gallery .tools a.play        {   border-right:1px solid rgb(201,201,201);float:left;}
+
+/* ====================================================== */
+.photo-gallery .thumbs              {   position:relative;padding:0 25px;overflow:hidden;}
+.photo-gallery .thumbs a.slideLeft  {   left:0;z-index:2; }
+.photo-gallery .thumbs a.slideRight {   right:0;z-index:2; }
+.photo-gallery .thumbs a.slideLeft,
+.photo-gallery .thumbs a.slideRight {   line-height:60px;font-size:30px;font-weight:bold;width:20px;position:absolute; }
+.photo-gallery .thumbs a            {   height:60px;overflow:hidden;width:100px;padding:2px;background-color:White;border:1px solid rgb(201,201,201);margin:-2px;display:inline-block;vertical-align:bottom;cursor:pointer;}
+.photo-gallery .thumbs a.selected   {   border-color:#000;position:relative;border-width:3px;padding:0; }
+.photo-gallery .thumbs a img        {   display:block; }
+
+
+.photo-gallery .thumbs .tslider     {   overflow:hidden;width:999em;position:relative; }
+.photo-gallery .thumbs .tslider a   {   display:block;float:left;border-right:0; }

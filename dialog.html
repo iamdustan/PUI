@@ -1,0 +1,91 @@
+<!doctype html>  
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ --> 
+<!--[if lt IE 7 ]> <html class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Dialog Component &mdash; PUI Interface Library // Dustan Kasten</title>
+  <meta name="description" content="">
+  <meta name="author" content="Dustan Kasten">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!--  Mobile viewport optimized: j.mp/bplateviewport -->
+
+  <!-- CSS : implied media="all" -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/libs/modernizr-1.6.min.js"></script>
+</head>
+<body lang="en" >
+  <div id="container" class="wrap">
+    <header>
+        <h1><em>PUI</em>
+            <small>Prototypin' User Interactions</small>
+        </h1>
+    </header>
+    
+    <div id="main" role="main">
+        <div class="line">
+            <div class="unit size1of4">
+                <div class="mod">
+                    <div class="inner">
+                        <div class="hd"><h3>Dialog</h3></div>
+                        <div class="bd">
+                            <p><button data-target="openDialog1" class="dialog-trigger">Open First Example</button></p>
+                            <div id="openDialog1" title="First Dialog Example" class="dialog">
+                                <p>I am the first dialog example.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit size1of4">
+                <div class="mod">
+                    <div class="inner">
+                        <div class="hd"><h3>Dialog</h3></div>
+                        <div class="bd">
+                            <p><button data-target="openDialog2" class="dialog-trigger">Open Second Example</button></p>
+                            <div id="openDialog2" class="dialog">
+                                <p>I am the second dialog example.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit size1of4">
+                <div class="mod">
+                    <div class="inner">
+                        <div class="hd"><h3>Slider</h3></div>
+                        <div class="bd slider js-slider">
+                            <p>To do...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="unit size1of4 lastUnit">
+                <div class="mod">
+                    <div class="inner">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer></footer>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.5.0.js"%3E%3C/script%3E'))</script>
+  
+  <!--<script src="js/plugins.js"></script>-->
+  <script src="js/lib.js"></script>
+  <script src="js/dialog.js"></script>
+  
+  <!--[if lt IE 7 ]>
+    <script src="js/libs/dd_belatedpng.js"></script>
+    <script>DD_belatedPNG.fix('img, .png_bg'); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
+  <![endif]-->
+</body>
+</html>
