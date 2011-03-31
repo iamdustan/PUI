@@ -1,111 +1,127 @@
 /*
  * WLIB - Slideshow widget
- * div.js-slideshow>div.tools+div.image-wrapper
+ * div.js-slideshow>div.tools+div.image-wrapper+div.thumbs
+ *
+ * TODO // add lightbox functionality
  */
 (function client_slideshow () {
-    WLIB.slideshow = function () {
-        var ss = $('.js-slideshow')
+    WLIB.slideshow = function (elem, obj) {
+        var ss = elem || $('.js-slideshow')
           , btn = {
                 prev : ss.find('a.prev')
               , next : ss.find('a.next')
+              , slideshow : ss.find('a.slideshow')
             }
           , counter = ss.find('small.current-image')
           , images = ss.find('.image-wrapper>img')
+          , tcont = ss.find('.thumbs')
           , tslider = ss.find('.thumbs>.tslider')
           , thumbs = tslider.find('>a')
-          , state = {};
+          , state = {
+                playing : false
+              , ssTimer : undefined
+              , visible : images.filter(':first')
+              , vindex : images.filter(':first').index()+1
+          };
         
         images.filter(':not(:first-child)').css({'opacity' : 0}).hide();
-        
-        // initial state
-        state['playing'] = false;
-        state['visible'] = images.filter(':first');
-        state['vindex']  = state['visible'].index()+1;
         
         // general functions
         function updateCounter () {
             counter.text( state['vindex'] + ' / ' + images.length );
         };
         function updateThumbs () {
-            thumbs.removeClass('selected')
-                .filter(':nth-child(' + state['vindex'] + ')').addClass('selected');
+            var self = thumbs.removeClass('selected').filter(':nth-child(' + state['vindex'] + ')').addClass('selected');
+            var ciLeft = self.position().left
+              , ciWidth = self.outerWidth()
+              , tsliderLeft = parseInt( tslider.css('left') )
+              , optimalLeft = -(self.position().left + Math.floor(ciWidth/2) - Math.floor(visibleArea/2));
+            if ( ciLeft+ciWidth > visibleArea+tsliderLeft ) {
+                newLeft = ( optimalLeft < maxLeft ) ? maxLeft : optimalLeft;
+                tslider.animate({'left':newLeft}, 250);
+            } else {
+                newLeft = ( optimalLeft > 0 ) ? 0 : optimalLeft;
+                tslider.animate({'left':newLeft}, 250);
+            }
         };
-
-        btn['prev'].bind('click', function( e ) {
+        
+        // All Toolbar Actions
+        $('.tools').delegate('a', 'click', function( e ) {
             e.preventDefault();
-            state['visible'].stop().animate({ 'opacity' : 0 }, function () {
-                var self = $(this);
-                self.hide();
-                if ( self.prev().length > 0 ) {
-                    state['visible'] = self.prev();
-                } else {
-                    state['visible'] = images.filter(':last');
-                }
+            var target = $(this);
+            function slideshow () {
+                btn.next.trigger('click');
+                state.ssTimer = setTimeout(slideshow, 3000);
+            };
+            
+            if( target.hasClass('prev') || target.hasClass('next') ) {
+                var oldVisible = state['visible'];
+                ( target.hasClass('prev') ) ?
+                    state['visible'] = ( oldVisible.prev().length > 0 ) ? oldVisible.prev() : images.filter(':last') :
+                    state['visible'] = ( oldVisible.next().length > 0 ) ? oldVisible.next() : images.filter(':first');
                 state['vindex'] = state['visible'].index()+1;
                 updateCounter();
                 updateThumbs();
-                state['visible'].show().stop().animate({'opacity' : 1});
-            });
-        });
-
-        btn['next'].bind('click', function (e) {
-            e.preventDefault();
-            state['visible'].stop().animate({ 'opacity' : 0 }, function () {
-                var self = $(this);
-                self.hide();
-                if ( self.next().length > 0 ) {
-                    state['visible'] = self.next();
+                
+                oldVisible.stop().animate({ 'opacity' : 0 }, function () {
+                    oldVisible.hide();
+                    state['visible'].show().stop().animate({'opacity' : 1});
+                });
+            } else if ( target.hasClass('slideshow') ) {
+                if ( state.playing === false ) {
+                    state.playing = true;
+                    target.addClass('playing');
+                    slideshow();
                 } else {
-                    state['visible'] = images.filter(':first');
-                }
-                state['vindex'] = state['visible'].index()+1;
-                updateCounter();
-                updateThumbs();
-                state['visible'].show().stop().animate({'opacity' : 1});
-            });
+                    state.playing = false;
+                    target.removeClass('playing');
+                    clearTimeout( state.ssTimer );
+                };
+            }
         });
 
-        thumbs.bind('click', function( e ) {
-            e.preventDefault();
-            var self = $(this)
-              , ind = self.index();
-            thumbs.filter('.selected').removeClass('selected');
-            self.addClass('selected');
-            
-            var cur = state['visible'];
-            
-            state['visible'] = images.filter(':nth-child(' + (+ind+1) + ')');
-            state['vindex'] = state['visible'].index()+1;
-            
-            cur.stop().animate({ 'opacity' : 0 }, function () {
-                $(this).hide();
-                updateCounter();
-                state['visible'].show().stop().animate({'opacity' : 1});
-            });
-        });
 
-        var lp = 0
+        var newLeft = 0
           , down = false
           , mw = 0
-          , iw = $('.thumbs').innerWidth() - Math.floor( parseInt( $('.thumbs').css('paddingLeft')) /2 );
-          
-        thumbs.each(function () {
-            mw += $(this).outerWidth(); 
+          , visibleArea = tcont.innerWidth() - (parseInt( tcont.css('paddingLeft') + tcont.css('paddingLeft') )*2 )
+          , maxLeft = visibleArea;//updated as thumbnails loaded
+      
+        thumbs.find('>img').each(function( e, i ) {
+            var self = $(this);
+            self.load(function() {
+                mw += self.parent().outerWidth();
+                maxLeft -= self.parent().outerWidth();
+            });
         });
         tslider.parent().delegate('a', 'mousedown', function( e ) {
             down = true;
             var self = $(this);
-            if ( tslider.css('left') == 'auto' ) { tslider.css('left', lp + 'px' ); }
-            if ( self.hasClass('slideLeft') ) {
-                if ( lp+40 < 0 ) { lp += 40; }
-                else { lp = 0 }
-            } else if ( self.hasClass('slideRight') ) {
-                if ( lp-40 > iw-mw ) { lp -= 40; }
-                else { lp = 0-mw+iw }
+            if ( tslider.css('left') == 'auto' ) { tslider.css('left', newLeft + 'px' ); }
+            if ( self.hasClass('slideLeft') ) {             // right arrow
+                ( newLeft+40 < 0 ) ?
+                    newLeft += 40 :
+                    newLeft = 0;
+            } else if ( self.hasClass('slideRight') ) {     // left arrow
+                ( newLeft-40 > maxLeft ) ?
+                    newLeft -= 40 :
+                    newLeft = maxLeft;
+            } else {                                        // thumbnail
+                var ind = self.index()
+                  , cur = state['visible'];
+
+                state['visible'] = images.filter(':nth-child(' + (+ind+1) + ')');
+                state['vindex'] = state['visible'].index()+1;
+                updateThumbs();
+                
+                cur.stop().animate({ 'opacity' : 0 }, function () {
+                    $(this).hide();
+                    updateCounter();
+                    state['visible'].show().stop().animate({'opacity' : 1});
+                });
             }
-            
             tslider.animate({
-                'left': lp + 'px'
+                'left': newLeft + 'px'
             }, 100, function () {
                 setTimeout(function() {
                     if( down ) { self.trigger('mousedown') };

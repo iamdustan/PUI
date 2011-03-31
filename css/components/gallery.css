@@ -40,18 +40,43 @@
 .photo-gallery .tools a.prev,
 .photo-gallery .tools a.next        {   border-left:1px solid rgb(201,201,201); }
 .photo-gallery .tools a.lightbox,
-.photo-gallery .tools a.play        {   border-right:1px solid rgb(201,201,201);float:left;}
+.photo-gallery .tools a.slideshow   {   border-right:1px solid rgb(201,201,201);float:left;}
+.photo-gallery .tools .slideshow                    {   padding-left:20px;position:relative; }
+.photo-gallery .tools .slideshow .ui-icon           {   position:absolute;top:50%;margin-top:-8px;left:3px;height:15px;width:15px;
+                                                        background:url(images/ui-icon-slideshow.png) no-repeat 50% 0%; }
+.photo-gallery .tools .slideshow:hover .ui-icon     {   background-position:50% 33.333%; }
+.photo-gallery .tools .playing .ui-icon             {   background-position:50% 33.333%; }
+.photo-gallery .tools .playing:hover .ui-icon       {   background-position:50% 100%; }
 
 /* ====================================================== */
 .photo-gallery .thumbs              {   position:relative;padding:0 25px;overflow:hidden;}
+.photo-gallery .thumbs a            {   background-color:White;border:1px solid rgb(201,201,201);cursor:pointer;padding:2px; }
 .photo-gallery .thumbs a.slideLeft  {   left:0;z-index:2; }
 .photo-gallery .thumbs a.slideRight {   right:0;z-index:2; }
 .photo-gallery .thumbs a.slideLeft,
 .photo-gallery .thumbs a.slideRight {   line-height:60px;font-size:30px;font-weight:bold;width:20px;position:absolute; }
-.photo-gallery .thumbs a            {   height:60px;overflow:hidden;width:100px;padding:2px;background-color:White;border:1px solid rgb(201,201,201);margin:-2px;display:inline-block;vertical-align:bottom;cursor:pointer;}
-.photo-gallery .thumbs a.selected   {   border-color:#000;position:relative;border-width:3px;padding:0; }
-.photo-gallery .thumbs a img        {   display:block; }
+.photo-gallery .tslider a           {   overflow:hidden;
+                                        display:inline-block;vertical-align:bottom;}
+.photo-gallery .tslider a.selected  {   border-color:#000;position:relative;background-color:#000; }
+.photo-gallery .tslider a img       {   display:block;height:60px;max-width:120px; }
 
 
 .photo-gallery .thumbs .tslider     {   overflow:hidden;width:999em;position:relative; }
-.photo-gallery .thumbs .tslider a   {   display:block;float:left;border-right:0; }
+.photo-gallery .thumbs .tslider a   {   display:block;float:left; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
