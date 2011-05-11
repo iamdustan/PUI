@@ -1,7 +1,6 @@
  /* === photo-gallery === */
 .photo-gallery                  {   border: solid 1px rgb(201,201,201);
-                                    background-color:rgb(247,247,247);
-                                    
+                                    background-color:rgb(236,235,234);
                                     margin-bottom:1.5em;
                                 }
 .photo-gallery .tools           {   background-color: rgb(253,253,253);
@@ -9,12 +8,13 @@
                                     background-image: -moz-linear-gradient(center bottom,#ffffff 70%,#f0f0f0 100%);
                                     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f0f0f0, endColorstr=#ffffff);
                                     ms-filter: "progid:DXImageTransform.Microsoft.gradient (GradientType=0, startColorstr=#f0f0f0, endColorstr=#ffffff)";
-                                    
                                     border-bottom: solid 1px rgb(201,201,201);text-align: right;
                                 }
 .photo-gallery .image-wrapper   {   padding:.75em; }
 
-.photo-gallery .image-wrapper img{  display:block;width:100%; }
+.photo-gallery .image-wrapper img{  display:block;max-height:600px;margin:0 auto;max-width:100%;
+                                    -webkit-box-shadow:1px 1px 5px rgba(0,0,0,.7);-moz-box-shadow:1px 1px 5px rgba(0,0,0,.7);-o-box-shadow:1px 1px 5px rgba(0,0,0,.7);-ms-box-shadow:1px 1px 5px rgba(0,0,0,.7);box-shadow:1px 1px 5px rgba(0,0,0,.7);
+                                }
 
 
 .tabs .photo-gallery            {   border: none 0px; background-color: transparent; }
@@ -49,7 +49,7 @@
 .photo-gallery .tools .playing:hover .ui-icon       {   background-position:50% 100%; }
 
 /* ====================================================== */
-.photo-gallery .thumbs              {   position:relative;padding:0 25px;overflow:hidden;}
+.photo-gallery .thumbs              {   position:relative;padding:0 25px;overflow:hidden;margin:-1px;}
 .photo-gallery .thumbs a            {   background-color:White;border:1px solid rgb(201,201,201);cursor:pointer;padding:2px; }
 .photo-gallery .thumbs a.slideLeft  {   left:0;z-index:2; }
 .photo-gallery .thumbs a.slideRight {   right:0;z-index:2; }

@@ -4,9 +4,10 @@
  *
  * TODO // add lightbox functionality
  */
-(function client_slideshow () {
+(function slideshowClosure () {
     WLIB.slideshow = function (elem, obj) {
         var ss = elem || $('.js-slideshow')
+          , tools = ss.find('.tools')
           , btn = {
                 prev : ss.find('a.prev')
               , next : ss.find('a.next')
@@ -22,31 +23,39 @@
               , ssTimer : undefined
               , visible : images.filter(':first')
               , vindex : images.filter(':first').index()+1
-          };
+          },hasThumbs = (tcont.length > 0 ) ? true : false;
         
         images.filter(':not(:first-child)').css({'opacity' : 0}).hide();
         
+        if ( images.length <= 1 ) {
+            ss.find('div.tools').remove();
+            tcont.remove();
+        }
+
+
         // general functions
         function updateCounter () {
             counter.text( state['vindex'] + ' / ' + images.length );
         };
         function updateThumbs () {
-            var self = thumbs.removeClass('selected').filter(':nth-child(' + state['vindex'] + ')').addClass('selected');
-            var ciLeft = self.position().left
-              , ciWidth = self.outerWidth()
-              , tsliderLeft = parseInt( tslider.css('left') )
-              , optimalLeft = -(self.position().left + Math.floor(ciWidth/2) - Math.floor(visibleArea/2));
-            if ( ciLeft+ciWidth > visibleArea+tsliderLeft ) {
-                newLeft = ( optimalLeft < maxLeft ) ? maxLeft : optimalLeft;
-                tslider.animate({'left':newLeft}, 250);
-            } else {
-                newLeft = ( optimalLeft > 0 ) ? 0 : optimalLeft;
+            if ( hasThumbs ) {
+                var self = thumbs.removeClass('selected').filter(':nth-child(' + state['vindex'] + ')').addClass('selected')
+                  , ciLeft, ciWidth, tsliderLeft, optimalLeft;
+                ciLeft = self.position().left
+                ciWidth = self.outerWidth()
+                tsliderLeft = parseInt( tslider.css('left') )
+                optimalLeft = -(self.position().left + Math.floor(ciWidth/2) - Math.floor(visibleArea/2));
+                
+                newLeft = ( optimalLeft < maxLeft ) ?
+                        maxLeft :
+                        ( optimalLeft > 0 ) ? 0 : optimalLeft;
                 tslider.animate({'left':newLeft}, 250);
             }
         };
+
         
         // All Toolbar Actions
-        $('.tools').delegate('a', 'click', function( e ) {
+        tools.delegate('a', 'click', function( e ) {
             e.preventDefault();
             var target = $(this);
             function slideshow () {
@@ -80,7 +89,6 @@
             }
         });
 
-
         var newLeft = 0
           , down = false
           , mw = 0
@@ -89,23 +97,27 @@
       
         thumbs.find('>img').each(function( e, i ) {
             var self = $(this);
-            self.load(function() {
-                mw += self.parent().outerWidth();
-                maxLeft -= self.parent().outerWidth();
-            });
+            if ($.browser.msie) {
+                setTimeout( (function () {
+                    mw += self.parent().outerWidth();
+                    maxLeft -= self.parent().outerWidth();
+                }), 2000);
+            } else {
+                self.load(function () {
+                    mw += self.parent().outerWidth();
+                    maxLeft -= self.parent().outerWidth();
+                });
+            }
         });
+
         tslider.parent().delegate('a', 'mousedown', function( e ) {
             down = true;
             var self = $(this);
             if ( tslider.css('left') == 'auto' ) { tslider.css('left', newLeft + 'px' ); }
             if ( self.hasClass('slideLeft') ) {             // right arrow
-                ( newLeft+40 < 0 ) ?
-                    newLeft += 40 :
-                    newLeft = 0;
+                newLeft = ( newLeft+40 < 0 ) ? newLeft+40 : 0;
             } else if ( self.hasClass('slideRight') ) {     // left arrow
-                ( newLeft-40 > maxLeft ) ?
-                    newLeft -= 40 :
-                    newLeft = maxLeft;
+                newLeft = ( newLeft-40 > maxLeft ) ? newLeft-40 : maxLeft;
             } else {                                        // thumbnail
                 var ind = self.index()
                   , cur = state['visible'];
